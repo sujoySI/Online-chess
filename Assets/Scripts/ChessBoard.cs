@@ -61,12 +61,12 @@ public class ChessBoard : MonoBehaviour
     }
 
     //Generate the Board
-    private void GenarateAllTiles(float tileSize,int tileCountX, int tileCountY)
+    private void GenarateAllTiles(float tileSize, int tileCountX, int tileCountY)
     {
         tiles = new GameObject[tileCountX, tileCountY];
         for (int x = 0; x < tileCountX; x++)
         {
-            for (int y=0; y < tileCountY; y++)
+            for (int y = 0; y < tileCountY; y++)
             {
                 tiles[x, y] = GenerateSingleTile(tileSize, x, y);
             }
