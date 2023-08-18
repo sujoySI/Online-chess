@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 782b3910cfe3363419a7e9ddf32ca0c7, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.30046743, g: 0.46719205, b: 0.53537226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -315,14 +315,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.53729963, y: 0, z: 0, w: 0.8433915}
-  m_LocalPosition: {x: -0.06, y: 6.04, z: -3.83}
+  m_LocalRotation: {x: 0.5224985, y: 0, z: 0, w: 0.8526402}
+  m_LocalPosition: {x: -0.06, y: 6.4, z: -3.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 65, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 63, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +414,7 @@ PrefabInstance:
     - target: {fileID: 394594571629752166, guid: 03c895e6197fffc41990d798b29a60eb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 116120203c32aba4db261968a2015b60, type: 2}
+      objectReference: {fileID: 2100000, guid: 52d870a9e0e43324baba9af41196585c, type: 2}
     - target: {fileID: 919132149155446097, guid: 03c895e6197fffc41990d798b29a60eb, type: 3}
       propertyPath: m_Name
       value: newChessBoard
@@ -446,3 +446,13 @@ MonoBehaviour:
   tileSize: 1
   yOffset: 0.05
   boardCentre: {x: 0, y: 0, z: 0}
+  prefabs:
+  - {fileID: 2781095447897692752, guid: 8f7628efdcbab4c4984c77a56709c357, type: 3}
+  - {fileID: 8167938985787015395, guid: 973c79108fdf4ea4f9a8b6803fe0899a, type: 3}
+  - {fileID: 900471995635733564, guid: ebec561bf016e0e41806a44545c2a1a2, type: 3}
+  - {fileID: 2565186823346226940, guid: fc86c7b3ac5dbde41b208cebb2c10c96, type: 3}
+  - {fileID: 503097534001124302, guid: 5352865593d0aaf40b63d1a6ebd78384, type: 3}
+  - {fileID: 8239668192054407316, guid: 45b56547161f8084a8734f69ac61cf5e, type: 3}
+  teamMaterials:
+  - {fileID: 2100000, guid: 085268896e170d54baa8282ff4d3a9c7, type: 2}
+  - {fileID: 2100000, guid: ae34ecad5ec3cdc479c0b875434acb4c, type: 2}
