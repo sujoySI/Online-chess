@@ -25,12 +25,12 @@ public class Pawn : ChessPiece
                 r.Add(new Vector2Int(currentX, currentY + (direction * 2)));
         }
 
-        //Kill Moves
-        //Right kill
+        //Kill Moves Right 
         if (currentX != tileCountX - 1)
             if (board[currentX + 1, currentY + direction] != null && board[currentX + 1, currentY + direction].team != team)
                 r.Add(new Vector2Int(currentX + 1, currentY + direction));
-        //Left kill
+
+        //Kill Moves Left
         if (currentX != 0)
             if (board[currentX - 1, currentY + direction] != null && board[currentX - 1, currentY + direction].team != team)
                 r.Add(new Vector2Int(currentX - 1, currentY + direction));
