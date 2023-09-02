@@ -188,10 +188,10 @@ public class ChessBoard : MonoBehaviour
         chessPieces[5, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
         chessPieces[6, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
         chessPieces[7, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
-        for (int i = 0; i < TILE_COUNT_X; i++)
+        /*for (int i = 0; i < TILE_COUNT_X; i++)
         {
             chessPieces[i, 1] = SpawnSinglePiece(ChessPieceType.Pawn, whiteTeam);
-        }
+        }*/
 
         //White Team
         chessPieces[0, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
@@ -202,10 +202,10 @@ public class ChessBoard : MonoBehaviour
         chessPieces[5, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
         chessPieces[6, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
         chessPieces[7, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
-        for (int i = 0; i < TILE_COUNT_X; i++)
+        /*for (int i = 0; i < TILE_COUNT_X; i++)
         {
             chessPieces[i, 6] = SpawnSinglePiece(ChessPieceType.Pawn, blackTeam);
-        }
+        }*/
     }
     private ChessPiece SpawnSinglePiece(ChessPieceType type,int team)
     {
@@ -254,9 +254,8 @@ public class ChessBoard : MonoBehaviour
         for (int i = 0; i < availableMoves.Count; i++)
         {
             tiles[availableMoves[i].x, availableMoves[i].y].layer = LayerMask.NameToLayer("Tile");
-
-            availableMoves.Clear();
         }
+        availableMoves.Clear();
     }
 
     //Operations

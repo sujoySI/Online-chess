@@ -33,7 +33,7 @@ public class Pawn : ChessPiece
         //Left kill
         if (currentX != 0)
             if (board[currentX - 1, currentY + direction] != null && board[currentX - 1, currentY + direction].team != team)
-                r.Add(new Vector2Int(currentX + 1, currentY + direction));
+                r.Add(new Vector2Int(currentX - 1, currentY + direction));
 
         return r;
     }
