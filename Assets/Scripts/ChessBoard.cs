@@ -98,6 +98,8 @@ public class ChessBoard : MonoBehaviour
                         availableMoves = currentlyDragging.GetAvailableMoves(ref chessPieces,TILE_COUNT_X,TILE_COUNT_Y);
                         // Get a list of Special Moves as well
                         specialMove = currentlyDragging.GetSpecialMoves(ref chessPieces, ref moveList, ref availableMoves);
+
+                        PreventCheck();
                         HighlightTiles();
                     }
                 }
@@ -436,6 +438,171 @@ public class ChessBoard : MonoBehaviour
             }
         }
     }
+    private void PreventCheck()
+    {
+        ChessPiece targetKing = null;
+        for(int x = 0; x< TILE_COUNT_X; x++)
+        {
+            for(int y = 0; y< TILE_COUNT_Y; y++)
+            {
+                if (chessPieces[x, y] != null)
+                {
+                    if (chessPieces[x, y].type == ChessPieceType.King)
+                    {
+                        if (chessPieces[x, y].team == currentlyDragging.team)
+                        {
+                            targetKing = chessPieces[x, y];
+                        }
+                    }
+                }
+            }
+        }
+
+        //We're sending ref of availableMoves, we'll delete all the moves that put us in check position
+        SimulateMoveForSinglePiece(currentlyDragging,ref availableMoves, targetKing);
+    }
+    private void SimulateMoveForSinglePiece(ChessPiece cp, ref List<Vector2Int> moves, ChessPiece targetKing)
+    {
+        //Save current values, to reset after the function call
+        int actualX = cp.currentX;
+        int actualY = cp.currentY;
+        List<Vector2Int> movesToRemove = new List<Vector2Int>();
+
+        //Going through all the moves, simulate them and check if we're in 'CHECK'
+        for(int i=0; i< moves.Count; i++)
+        {
+            int simX = moves[i].x;
+            int simY = moves[i].y;
+
+            Vector2Int kingPositionThisSim = new Vector2Int(targetKing.currentX, targetKing.currentY);
+            //Did we simulate the king's move
+            if (cp.type == ChessPieceType.King)
+            {
+                kingPositionThisSim = new Vector2Int(simX, simY);
+            }
+
+            //Copy the [,] and not a reference
+            ChessPiece[,] simulation = new ChessPiece[TILE_COUNT_X, TILE_COUNT_Y];
+            List<ChessPiece> simAttackingPiece = new List<ChessPiece>();
+            for(int x = 0; x < TILE_COUNT_X; x++)
+            {
+                for(int y = 0; y < TILE_COUNT_Y; y++)
+                {
+                    if (chessPieces[x, y] != null)
+                    {
+                        simulation[x, y] = chessPieces[x, y];
+                        if (simulation[x, y].team != cp.team)
+                        {
+                            simAttackingPiece.Add(simulation[x , y]);
+                        }
+                    }
+                }
+            }
+
+            //Simulate that move
+            simulation[actualX, actualY] = null;
+            cp.currentX = simX;
+            cp.currentY = simY;
+            simulation[simX, simY] = cp;
+
+            //Did one of our Piece got taken down during our simulation
+            var deadPiece = simAttackingPiece.Find(c => c.currentX == simX && c.currentY == simY);
+            if(deadPiece != null )
+            {
+                simAttackingPiece.Remove(deadPiece);
+            }
+
+            //Get all the simulated attacking pieces moves
+            List<Vector2Int> simMoves = new List<Vector2Int>();
+            for(int a = 0; a< simAttackingPiece.Count; a++)
+            {
+                var pieceMoves = simAttackingPiece[a].GetAvailableMoves(ref simulation, TILE_COUNT_X, TILE_COUNT_Y);
+                for(int b = 0; b< pieceMoves.Count; b++)
+                {
+                    simMoves.Add(pieceMoves[b]);
+                }
+            }
+
+            //Is the king in trouble? if so, remove the move
+            if(ContainsValidMove(ref simMoves, kingPositionThisSim))
+            {
+                movesToRemove.Add(moves[i]);
+            }
+
+            //Restore the actual cp data
+            cp.currentX = actualX;
+            cp.currentY = actualY;
+        }
+        
+        //Remove moves from current available move list
+        for(int i=0; i< movesToRemove.Count; i++)
+        {
+            moves.Remove(movesToRemove[i]);
+        }
+    }
+    private bool CheckForCheckMate()
+    {
+        var lastMove = moveList[moveList.Count-1];
+        int targetTeam = (chessPieces[lastMove[1].x , lastMove[1].y].team == 0) ? 1 : 0;
+
+        List<ChessPiece> attackingPieces = new List<ChessPiece>();
+        List<ChessPiece> defendingPieces = new List<ChessPiece>();
+
+        ChessPiece targetKing = null;
+        for (int x = 0; x < TILE_COUNT_X; x++)
+        {
+            for (int y = 0; y < TILE_COUNT_Y; y++)
+            {
+                if (chessPieces[x, y] != null)
+                {
+                    if (chessPieces[x, y].team == targetTeam)
+                    {
+                        defendingPieces.Add(chessPieces[x, y]);
+                        if (chessPieces[x, y].type == ChessPieceType.King)
+                        {
+                            targetKing = chessPieces[x, y];
+                        }
+
+                    }
+                    else
+                    {
+                        attackingPieces.Add(chessPieces[x, y]);
+                    }
+                }
+            }
+        }
+
+        //Is the king attcked right now?
+        List<Vector2Int> currentAvailabeMoves = new List<Vector2Int>();
+        for(int i = 0; i <attackingPieces.Count; i++)
+        {
+            var pieceMoves = attackingPieces[i].GetAvailableMoves(ref chessPieces, TILE_COUNT_X, TILE_COUNT_Y);
+            for (int b = 0; b < pieceMoves.Count; b++)
+            {
+                currentAvailabeMoves.Add(pieceMoves[b]);
+            }
+        }
+
+        //Are we in check right now
+        if(ContainsValidMove(ref currentAvailabeMoves, new Vector2Int(targetKing.currentX, targetKing.currentY)))
+        {
+            //King is under attck can we move something to help him?
+            for(int i = 0; i < defendingPieces.Count; i++)
+            {
+                List<Vector2Int> defendingMoves = defendingPieces[i].GetAvailableMoves(ref chessPieces, TILE_COUNT_X, TILE_COUNT_Y);
+                //We're sending ref of availableMoves, we'll delete all the moves that put us in check position
+                SimulateMoveForSinglePiece(defendingPieces[i], ref defendingMoves, targetKing);
+
+                if(defendingMoves.Count != 0)
+                    return false;
+            }
+
+            //Checkmate Exit
+            return true;
+        }
+
+        return false;
+    }
 
     //Operations
     private bool MoveTo(ChessPiece cp, int x, int y)
@@ -488,6 +655,9 @@ public class ChessBoard : MonoBehaviour
         moveList.Add(new Vector2Int[] {previousPosition, new Vector2Int(x, y)});
 
         ProcessSpecialMove();
+
+        if (CheckForCheckMate())
+            CheckMate(cp.team);
 
         return true;
     }
