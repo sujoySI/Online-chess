@@ -22,17 +22,18 @@ public class ChessPiece : MonoBehaviour
     private Vector3 desiredPosition;
     private Vector3 desiredScale = new Vector3(0.01f,0.01f,0.01f);
 
+    //Start And Update
     private void Start()
     {
         transform.rotation = Quaternion.Euler((team == 0) ? new Vector3(180,180, 0): new Vector3(180, 0, 0));
     }
-
     private void Update()
     {
         transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * 10);
         transform.localScale = Vector3.Lerp(transform.localScale, desiredScale, Time.deltaTime * 10);
     }
 
+    //Overrided Functions
     public virtual List<Vector2Int> GetAvailableMoves(ref ChessPiece[,] board, int tileCountX, int tileCountY)
     {
         List<Vector2Int> r = new List<Vector2Int>();
@@ -44,12 +45,12 @@ public class ChessPiece : MonoBehaviour
 
         return r;
     }
-
     public virtual SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList, ref List<Vector2Int> availableMoves)
     {
         return SpecialMove.None;
     }
 
+    //Transformations
     public virtual void SetPosition(Vector3 position , bool force = false)
     {
         desiredPosition = position;

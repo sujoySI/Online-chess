@@ -44,6 +44,7 @@ public class ChessBoard : MonoBehaviour
     private SpecialMove specialMove;
     private List<Vector2Int[]> moveList = new List<Vector2Int[]>();
     
+    //Awake and Update Functions
     private void Awake()
     {
         isWhiteTurn = true;

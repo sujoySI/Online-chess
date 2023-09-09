@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class King : ChessPiece
 {
+    //Overrider Functions
     public override List<Vector2Int> GetAvailableMoves(ref ChessPiece[,] board, int tileCountX, int tileCountY)
     {
         List<Vector2Int> r = new List<Vector2Int>();
@@ -104,7 +105,6 @@ public class King : ChessPiece
 
         return r;
     }
-
     public override SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList, ref List<Vector2Int> availableMoves)
     {
         SpecialMove r = SpecialMove.None;
