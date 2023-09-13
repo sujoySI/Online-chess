@@ -5,7 +5,7 @@ using Unity.Networking.Transport;
 public enum OpCode
 {
     KEEP_ALIVE = 1,
-    WLCOME = 2,
+    WELCOME = 2,
     START_GAME = 3,
     MAKE_MOVE = 4,
     REMATCH = 5
@@ -19,10 +19,10 @@ public static class NetUtility
         switch(opCode)
         {
             case OpCode.KEEP_ALIVE: msg = new NetKeepAlive(stream);break;
-            //case OpCode.WLCOME: msg = new NetWelcome(stream);break;
-            //case OpCode.START_GAME: msg = NetStartGame(stream);break;
-            //case OpCode.MAKE_MOVE: msg = NetMakeMove(stream);break;
-            //case OpCode.REMATCH: msg = NetRematch(stream);break;
+            case OpCode.WELCOME: msg = new NetWelcome(stream);break;
+            case OpCode.START_GAME: msg = new NetStartGame(stream);break;
+            //case OpCode.MAKE_MOVE: msg = new NetMakeMove(stream);break;
+            //case OpCode.REMATCH: msg = new NetRematch(stream);break;
             default:
                 Debug.LogError("Message Received had no OpCode");
                 break;

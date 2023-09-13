@@ -1,16 +1,17 @@
 using Unity.Networking.Transport;
+using UnityEngine;
 
-public class NetKeepAlive : NetMessages
+public class NetStartGame : NetMessages
 {
-    //Making message
-    public NetKeepAlive()
+    //Sending Message
+    public NetStartGame()
     {
-        Code = OpCode.KEEP_ALIVE;
+        Code = OpCode.START_GAME;
     }
-    //Receiving message
-    public NetKeepAlive(DataStreamReader reader)
+    //Recieving Message
+    public NetStartGame(DataStreamReader reader)
     {
-        Code = OpCode.KEEP_ALIVE;
+        Code = OpCode.START_GAME;
         Deserialize(reader);
     }
 
@@ -25,10 +26,10 @@ public class NetKeepAlive : NetMessages
 
     public override void ReceivedOnClient()
     {
-        NetUtility.C_KEEP_ALIVE?.Invoke(this);
+        NetUtility.C_START_GAME?.Invoke(this);
     }
     public override void ReceivedOnServer(NetworkConnection cnn)
     {
-        NetUtility.S_KEEP_ALIVE?.Invoke(this, cnn);
+        NetUtility.S_START_GAME?.Invoke(this, cnn);
     }
 }

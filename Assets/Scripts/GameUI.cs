@@ -1,5 +1,13 @@
+using System;
 using TMPro;
 using UnityEngine;
+
+public enum CameraAngles
+{
+    menu = 0,
+    whiteTeam = 1,
+    blackTeam = 2
+}
 
 public class GameUI : MonoBehaviour
 {
@@ -10,16 +18,31 @@ public class GameUI : MonoBehaviour
 
     [SerializeField] private Animator menuAnimator;
     [SerializeField] private TMP_InputField addressInput;
+    [SerializeField] private GameObject[] cameraAngles;
+
+    public Action<bool> SetLocalGame;
 
     private void Awake()
     {
-        Instance = this; 
+        Instance = this;
+        RegisterEvent();
+    }
+
+    //Cameras
+    public void ChangeCamera(CameraAngles index)
+    {
+        for(int i = 0; i < cameraAngles.Length; i++)
+        {
+            cameraAngles[i].SetActive(false);
+        }
+        cameraAngles[(int)index].SetActive(true);
     }
 
     //Button Test
     public void OnLocalGameButton()
     {
         menuAnimator.SetTrigger("InGameMenu");
+        SetLocalGame?.Invoke(true);
         server.Init(8007);
         client.Init("127.0.0.1", 8007);
     }
@@ -27,24 +50,44 @@ public class GameUI : MonoBehaviour
     {
         menuAnimator.SetTrigger("OnlineMenu");
     }
+
     public void OnOnlineHostButton() 
     {
+        SetLocalGame?.Invoke(false);
         server.Init(8007);
         client.Init("127.0.0.1", 8007);
         menuAnimator.SetTrigger("HostMenu");
     }
     public void OnOnlineConnectButton()
     {
+        SetLocalGame?.Invoke(false);
         client.Init(addressInput.text, 8007);
     }
     public void OnOnlineBackButton() 
     {
         menuAnimator.SetTrigger("StartMenu");
     }
+
     public void OnHostBackButton()
     {
         server.ShutDown();
         client.ShutDown();
         menuAnimator.SetTrigger("OnlineMenu");
     }
+
+    #region
+    private void RegisterEvent()
+    {
+        NetUtility.C_START_GAME += OnStartGameClient;
+    }
+    private void UnregisterEvent()
+    {
+        NetUtility.C_START_GAME -= OnStartGameClient;
+    }
+
+    private void OnStartGameClient(NetMessages messages)
+    {
+        menuAnimator.SetTrigger("InGameMenu");
+    }
+    #endregion
 }
