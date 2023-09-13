@@ -38,7 +38,7 @@ public static class NetUtility
         }
     }
     
-    //Net Messages
+    //Net Messages(coversation between client and server)
     //When we receive keep_alive message on Client side
     public static Action<NetMessages> C_KEEP_ALIVE;
     public static Action<NetMessages> C_WELCOME;
