@@ -13,6 +13,8 @@ public enum SpecialMove
 
 public class ChessBoard : MonoBehaviour
 {
+    //Variables
+    #region
     [Header("Art Stuff")]
     [SerializeField] private Material tileMaterial;
     [SerializeField] private float tileSize = 1.0f;
@@ -47,8 +49,9 @@ public class ChessBoard : MonoBehaviour
     private int playerCount = -1;
     private int currentTeam = -1;
     private bool localGame = true;
-    
-    //Awake and Update Functions
+    #endregion
+
+    //Start and Update Functions
     private void Start()
     {
         isWhiteTurn = true;
