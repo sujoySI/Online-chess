@@ -59,7 +59,6 @@ public class ChessBoard : MonoBehaviour
         GenarateAllTiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
         SpawnAllPieces();
         PositionAllPieces();
-
         RegisterEvent();
     }
     private void Update()
