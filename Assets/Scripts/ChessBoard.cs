@@ -696,6 +696,7 @@ public class ChessBoard : MonoBehaviour
         return false;
     }
 
+    //Server client stuffs
     #region
     private void RegisterEvent()
     {
